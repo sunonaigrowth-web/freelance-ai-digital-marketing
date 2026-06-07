@@ -1,11 +1,18 @@
-name: Test Node Setup
+name: Auto Sitemap Generator
 
 on:
+  push:
+    branches:
+      - main
+
   workflow_dispatch:
 
 jobs:
-  test:
+  sitemap:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
 
     steps:
       - uses: actions/checkout@v4
@@ -13,9 +20,16 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 22
 
-      - name: Check Version
+      - name: Generate Sitemap
+        run: node generate-sitemap.js
+
+      - name: Commit Sitemap
         run: |
-          node -v
-          npm -v
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add sitemap.xml
+          git commit -m "Auto update sitemap" || echo "No changes"
+          git push
