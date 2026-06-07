@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://sunonaigrowth-web.github.io/freelance-ai-digital-marketing/sitemap.xml
